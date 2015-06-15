@@ -54,11 +54,13 @@ export default function setupStore(options) {
   registry.register('transform:date', DS.DateTransform);
   registry.register('transform:main', DS.Transform);
 
-  env.serializer = container.lookup('serializer:-default');
-  env.restSerializer = container.lookup('serializer:-rest');
-  env.restNewSerializer = container.lookup('serializer:-rest-new');
-  env.store = container.lookup('store:main');
-  env.adapter = env.store.get('defaultAdapter');
+  Ember.run(function() {
+    env.serializer = container.lookup('serializer:-default');
+    env.restSerializer = container.lookup('serializer:-rest');
+    env.restNewSerializer = container.lookup('serializer:-rest-new');
+    env.store = container.lookup('store:main');
+    env.adapter = env.store.get('defaultAdapter');
+  });
 
   return env;
 }
