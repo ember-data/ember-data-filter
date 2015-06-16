@@ -1,5 +1,9 @@
 'use strict';
 
 module.exports = function(/* environment, appConfig */) {
-  return { };
+  return {
+    EmberENV: {
+      ENABLE_DS_FILTER: true
+    }
+  };
 };
