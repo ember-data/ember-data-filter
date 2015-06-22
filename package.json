@@ -11,7 +11,7 @@
     "build": "ember build",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": "https://github.com/ember-data/ember-data-filter",
   "engines": {
     "node": ">= 0.10.0"
   },
