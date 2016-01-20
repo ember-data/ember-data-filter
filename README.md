@@ -58,7 +58,7 @@ You can combine `store.all` in a computed property:
 export default Ember.Controller.extend({
 
   posts: Ember.computed(function() {
-    return this.store.all('post');
+    return this.store.peekAll('post');
   }),
 
   filteredPosts: Ember.computed('posts.@each.isPublished', function() {
