@@ -50,7 +50,7 @@ it.
 
 ## I Don't Want to Enable this Feature Due to Its Heavy Churn
 
-You can combine `store.all` in a computed property:
+You can combine `store.peekAll` in a computed property:
 
 ```js
 // app/controllers/posts.js
