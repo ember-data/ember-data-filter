@@ -8,6 +8,11 @@
 
 ### Configuration
 
+To use, you will need to add this mixin to the store. If you are
+also using another addon which extends the store, you will want
+to ensure that this mixin is applied to the store provided by
+that addon.
+
 ```js
 //  app/services/store.js
 import Store from 'ember-data/store';
@@ -83,3 +88,5 @@ License
 ------------------------------------------------------------------------------
 
 This project is licensed under the [MIT License](LICENSE.md).
+
+Copyright (c) 2015-2018
