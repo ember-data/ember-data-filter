@@ -1,4 +1,4 @@
-# Ember Data Filter
+# [DEPRECATED] Ember Data Filter
 
 ## Install
 
@@ -6,60 +6,38 @@
 
 `ember install ember-data-filter`
 
-### Rails and Globals Mode apps
+### Configuration
 
-You'll need to load a custom script that enables the script **before you
-load Ember**. For example, if you call your file config.js:
-
-```js
-// /config.js
-
-window.EmberENV = window.EmberENV || {};
-window.EmberENV.ENABLE_DS_FILTER = true;
-```
-
-If you're using Rails, you can use a Sprockets require directive to load
-this before ember:
-
-```
-// app/assets/application.js
-//= require jquery
-//= require config
-//= require ember
-// .. the rest of your require / file here ..
-```
-
-If you're loading ember using script tags, then you can simply load
-config.js first:
-
-```html
-<script src="jquery.js"></script>
-<script src="config.js"></script>
-<script src-"ember.js"></script>
-```
-
-
-This addon enables the `Ember.EmberENV.ENABLE_DS_FILTER` flag. This
-allows you to use `store.filter` without getting a deprecation warning
-in Ember Data 1.13 and 2.0.
-
-## Why?
-
-The Filter API is about to under-go some heavy churn to fix issues with
-it.
-
-## I Don't Want to Enable this Feature Due to Its Heavy Churn
-
-You can combine `store.peekAll` in a computed property:
+To use, you will need to add this mixin to the store. If you are
+also using another addon which extends the store, you will want
+to ensure that this mixin is applied to the store provided by
+that addon.
 
 ```js
-// app/controllers/posts.js
+//  app/services/store.js
+import Store from 'ember-data/store';
+import FilterMixin from 'ember-data-filter/mixins/filter';
 
-export default Ember.Controller.extend({
+export default Store.extend(FilterMixin);
+```
 
-  posts: Ember.computed(function() {
-    return this.store.peekAll('post');
-  }),
+## Deprecation Guide
+
+### ember-data-filter:filter
+
+You can combine `store.peekAll` with a computed property, for instance:
+
+```js
+// app/services/post-service.js
+import Ember from 'ember';
+
+export default Ember.Service.extend({
+  store: inject.service('store'),
+  
+  init() {
+    this._super();
+    this.posts = this.get('store').peekAll('post');
+  },
 
   filteredPosts: Ember.computed('posts.@each.isPublished', function() {
     return this.get('posts').filterBy('isPublished');
@@ -67,48 +45,48 @@ export default Ember.Controller.extend({
 });
 ```
 
-## Development Installation
+### ember-data-filter:query-for-filter
 
+To resolve this deprecation you will want to separate your usage
+of `filter` from your usage of `query`.
 
+Replace
+
+```js
+return store.filter(modelName, query, filter, options);
 ```
-ember install my-addon
+
+with the following if you need to wait for the query
+
+```js
+return store.query(modelName, query, options)
+  .then(() => {
+    return store.filter(modelName, filter);
+  });
 ```
 
+or the below if you do not need to wait for the query
 
-Usage
-------------------------------------------------------------------------------
+```js
+store.query(modelName, query, options);
+return store.filter(modelName, filter);
+```
 
-[Longer description of how to use the addon in apps.]
+### ember-data-filter:empty-filter
 
+Replace `store.filter(modelName)` with `store.peekAll(modelName)`.
 
-Contributing
-------------------------------------------------------------------------------
+The only difference between these two is the `filter` returns a promisfied `RecordArray`
+while `peekAll` returns a `RecordArray`. If during the transition you need to
+preserve the promise behavior, you may do the below:
 
-### Installation
-
-* `git clone <repository-url>`
-* `cd my-addon`
-* `npm install`
-
-### Linting
-
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
-
-### Running tests
-
-* `ember test` – Runs the test suite on the current Ember version
-* `ember test --server` – Runs the test suite in "watch mode"
-* `ember try:each` – Runs the test suite against multiple Ember versions
-
-### Running the dummy application
-
-* `ember serve`
-* Visit the dummy application at [http://localhost:4200](http://localhost:4200).
-
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+```js
+return RSVP.Promise.resolve(store.peekAll(modelName));
+```
 
 License
 ------------------------------------------------------------------------------
 
 This project is licensed under the [MIT License](LICENSE.md).
+
+Copyright (c) 2015-2018
