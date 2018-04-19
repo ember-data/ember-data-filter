@@ -1,6 +1,6 @@
 {
   "name": "ember-data-filter",
-  "version": "1.13.0",
+  "version": "2.0.0",
   "description": "Legacy Ember Data Filter Support",
   "keywords": [
     "filter",
