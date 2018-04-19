@@ -27,7 +27,7 @@ We recommend that you refactor away from using this addon. Below
  is a short guide for the three `filter` use scenarios and how to
  best refactor each.
 
-Why? Simply put, it's far more performance (and not a memory leak)
+Why? Simply put, it's far more performant (and not a memory leak)
  for you to manage filtering yourself via a specialized computed
  property tailored specifically for your needs.
 
