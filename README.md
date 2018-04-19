@@ -1,4 +1,4 @@
-# [DEPRECATED] Ember Data Filter
+# Ember Data Filter
 
 ## Install
 
@@ -21,7 +21,15 @@ import FilterMixin from 'ember-data-filter/mixins/filter';
 export default Store.extend(FilterMixin);
 ```
 
-## Deprecation Guide
+## Recommended Refactor Guide
+
+We recommend that you refactor away from using this addon. Below
+ is a short guide for the three `filter` use scenarios and how to
+ best refactor each.
+
+Why? Simply put, it's far more performance (and not a memory leak)
+ for you to manage filtering yourself via a specialized computed
+ property tailored specifically for your needs.
 
 ### ember-data-filter:filter
 
@@ -47,7 +55,7 @@ export default Ember.Service.extend({
 
 ### ember-data-filter:query-for-filter
 
-To resolve this deprecation you will want to separate your usage
+To resolve this you will want to separate your usage
 of `filter` from your usage of `query`.
 
 Replace

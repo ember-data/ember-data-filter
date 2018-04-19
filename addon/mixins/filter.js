@@ -2,7 +2,7 @@ import { computed } from '@ember/object';
 import Mixin from '@ember/object/mixin';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 import ArrayProxy from '@ember/array/proxy';
-import { assert, deprecate } from '@ember/debug';
+import { assert } from '@ember/debug';
 import { Promise } from 'rsvp';
 import DS from 'ember-data';
 
@@ -129,12 +129,12 @@ export default Mixin.create({
    @param {Function} filter
    @param {Object} options optional, options to be passed to store.query
    @return {PromiseArray}
-   @deprecated
    */
   filter(modelName, query, filter, options) {
     assert(`You need to pass a model name to the store's filter method`, modelName);
     assert(`Passing classes to store methods has been removed. Please pass a dasherized string instead of ${modelName}`, typeof modelName === 'string');
 
+    /*
     deprecate(
       `store.filter has been deprecated in favor of computed properties that watch record arrays.`,
       typeof filter === 'string',
@@ -143,6 +143,7 @@ export default Mixin.create({
         until: '3.5',
         url: 'https://github.com/ember-data/ember-data-filter#ember-data-filter:filter'
       });
+      */
 
     let promise;
     let length = arguments.length;
@@ -150,11 +151,13 @@ export default Mixin.create({
 
     // allow an optional server query
     if (hasQuery) {
+      /*
       deprecate(`passing a query to ember-data-filter's filter method has been deprecated`, false, {
         id: 'ember-data-filter:query-for-filter',
         until: '3.5',
         url: 'https://github.com/ember-data/ember-data-filter#ember-data-filter:query-for-filter'
       });
+      */
       promise = this.query(modelName, query, options);
     } else if (arguments.length === 2) {
       filter = query;
@@ -162,6 +165,7 @@ export default Mixin.create({
       filter = () => true;
     }
 
+    /*
     deprecate(
       `No filter was provided in a call to store.filter(${modelName}). To filter to all of a type, use store.peekAll`,
       filter !== '',
@@ -170,6 +174,7 @@ export default Mixin.create({
         until: '3.5',
         url: 'https://github.com/ember-data/ember-data-filter#ember-data-filter:empty-filter'
       });
+      */
 
     let all = this.peekAll(modelName);
     let normalizedModelName = all.modelName;
